@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="submit.css">
+    <link rel="stylesheet" href="bootstrap-4.6.2-dist/css/bootstrap.css">
+    <link rel="icon" href="Images/results.svg">
+    <title>Result</title>
+    <style>
+        .display-4 {
+            font-size: 1.5rem; /* Make the display text smaller for mobile */
+        }
+        @media (min-width: 768px) {
+            .display-4 {
+                font-size: 2.5rem; /* Larger display text for larger screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 shadow-lg">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="row no-gutters">
+                        <div class="col-12 col-md-4">
+                            <img src="Images/green-tick-img.jpg" class="card-img" alt="Success">
+                        </div>
+                        <div class="col-12 col-md-8">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h3 class="display-4 text-center">Your Test has been submitted!</h3>
+                                </div>
+                                <hr class="submitted">
+                                <div class="card-text">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h4 class="display-4 text-center">SCORECARD</h4>
+                                            <hr class="scorecard-hr">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 col-md-4">
+                                            <h4 class="display-4">Minutes:</h4>
+                                        </div>
+                                        <div class="col-6 col-md-2">
+                                            <h4 class="display-4" id="minutess-value"></h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 col-md-4">
+                                            <h4 class="display-4">Seconds:</h4>
+                                        </div>
+                                        <div class="col-6 col-md-2">
+                                            <h4 class="display-4 text-center" id="seconds-value"></h4>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-6 col-md-4">
+                                            <h4 class="display-4">SCORE:</h4>
+                                        </div>
+                                        <div class="col-6 col-md-2">
+                                            <h4 id="score" class="display-4 text-center"></h4>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 col-md-8">
+                                            <h4 class="display-4">IQ SCORE:</h4>
+                                        </div>
+                                        <div class="col-6 col-md-2">
+                                            <h4 id="iq-score" class="display-4 text-center"></h4>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-danger btn-block rounded-pill back-to-site">Back to Site</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        console.log('abc');
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('seconds-value').innerHTML = localStorage.getItem('sec');
+            document.getElementById('minutess-value').innerHTML = localStorage.getItem('min');
+            document.getElementById('score').innerHTML = localStorage.getItem('score');
+
+            const userScore = parseInt(localStorage.getItem('score'), 10);
+
+            fetch('scores.json')
+                .then(response => response.json())
+                .then(data => {
+                    const iqData = data.find(entry => entry.score === userScore);
+                    if (iqData) {
+                        document.getElementById('iq-score').innerHTML = iqData.iq;
+                    } else {
+                        document.getElementById('iq-score').innerHTML = "N/A";
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching IQ data:', error);
+                });
+        });
+    </script>
+</body>
+</html>
